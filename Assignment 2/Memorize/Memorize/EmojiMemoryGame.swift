@@ -39,6 +39,10 @@ class EmojiMemoryGame: ObservableObject {
         theme.name
     }
     
+    var score: Int {
+        model.score
+    }
+    
     // MARK: - Intent(s)
     
     func choose(card: MemoryGame<String>.Card) {

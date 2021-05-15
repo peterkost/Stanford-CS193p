@@ -15,6 +15,7 @@ struct EmojiMemoryGameView: View {
             Text(viewModel.themeName)
                 .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                 .bold()
+            Text("\(viewModel.score)")
             Button("New Game") {
                 viewModel.newGame()
             }
