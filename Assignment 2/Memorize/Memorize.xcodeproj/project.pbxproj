@@ -17,6 +17,7 @@
 		907DCF1E26468129009057DA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 907DCF1D26468129009057DA /* Preview Assets.xcassets */; };
 		907DCF26264683FB009057DA /* MemoryGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907DCF25264683FB009057DA /* MemoryGame.swift */; };
 		907DCF28264684D4009057DA /* EmojiMemoryGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907DCF27264684D4009057DA /* EmojiMemoryGame.swift */; };
+		90A4B403264FF37A00D7E6F7 /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4B402264FF37A00D7E6F7 /* Themes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		907DCF1F26468129009057DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		907DCF25264683FB009057DA /* MemoryGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryGame.swift; sourceTree = "<group>"; };
 		907DCF27264684D4009057DA /* EmojiMemoryGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMemoryGame.swift; sourceTree = "<group>"; };
+		90A4B402264FF37A00D7E6F7 /* Themes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 			children = (
 				907DCF1626468128009057DA /* MemorizeApp.swift */,
 				907DCF1826468128009057DA /* EmojiMemoryGameView.swift */,
+				90A4B402264FF37A00D7E6F7 /* Themes.swift */,
 				9064DDCE264954A200319FE5 /* Grid.swift */,
 				9064DDD226495BC600319FE5 /* Array+Identifiable .swift */,
 				9064DDD026495A0000319FE5 /* GridLayout.swift */,
@@ -160,6 +163,7 @@
 				907DCF1926468128009057DA /* EmojiMemoryGameView.swift in Sources */,
 				907DCF1726468128009057DA /* MemorizeApp.swift in Sources */,
 				9064DDD126495A0000319FE5 /* GridLayout.swift in Sources */,
+				90A4B403264FF37A00D7E6F7 /* Themes.swift in Sources */,
 				9064DDD326495BC600319FE5 /* Array+Identifiable .swift in Sources */,
 				9064DDCF264954A200319FE5 /* Grid.swift in Sources */,
 				907DCF28264684D4009057DA /* EmojiMemoryGame.swift in Sources */,
