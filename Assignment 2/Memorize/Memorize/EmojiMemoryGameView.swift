@@ -13,14 +13,14 @@ struct EmojiMemoryGameView: View {
     var body: some View {
         VStack {
             Text(viewModel.themeName)
-                .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                .bold()
-            Text("\(viewModel.score)")
+                .font(.largeTitle)
+            Text("Score: \(viewModel.score)")
+                .font(.title2)
             Button("New Game") {
                 viewModel.newGame()
             }
             Grid(viewModel.cards) {  card in
-                CardView(card: card).onTapGesture {
+                CardView(card: card, themeColor: viewModel.cardBackColor).onTapGesture {
                     self.viewModel.choose(card: card)
                 }
             }
@@ -32,6 +32,7 @@ struct EmojiMemoryGameView: View {
 
 struct CardView: View {
     var card: MemoryGame<String>.Card
+    var themeColor: Color
     
     var body: some View {
         GeometryReader { geometry in
@@ -42,7 +43,10 @@ struct CardView: View {
     func body(for size: CGSize) -> some View {
         ZStack {
             if card.isFaceUp {
-                RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
+                RoundedRectangle(cornerRadius: cornerRadius).fill(
+                    LinearGradient(
+                        gradient: Gradient(colors: [.white, themeColor]), startPoint: .top, endPoint: .bottom)
+)
                 RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: edgeLineWidth)
                 Text(card.content)
             } else {

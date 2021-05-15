@@ -10,6 +10,7 @@ import Foundation
 struct MemoryGame<CardContent> where CardContent: Equatable {
     var cards: [Card]
     var score: Int = 0
+    var lastCardPickTime = DispatchTime.now()
     
     var indexOfTheOneAndOnlyFaceUpCard: Int? {
         get { cards.indices.filter { cards[$0].isFaceUp}.only }
@@ -23,17 +24,23 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     mutating func choose(card: Card) {
         if  let chosenIndex  = cards.firstIndex(matching: card), !cards[chosenIndex].isFaceUp, !cards[chosenIndex].isMatched {
             if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
+                // Cacluate score multiplier based on time
+                let currentTime = DispatchTime.now()
+                let nanoSecondsSinceLastCardPick = currentTime.uptimeNanoseconds - lastCardPickTime.uptimeNanoseconds
+                let secondsSinceLastCardPick = Int(ceil(Double(nanoSecondsSinceLastCardPick/1000000000)))
+                
                 if cards[chosenIndex].content == cards[potentialMatchIndex].content {
                     cards[chosenIndex].isMatched = true
                     cards[potentialMatchIndex].isMatched = true
-                    score += 2
+                    score += max(10 - secondsSinceLastCardPick, 1) * 2
                 } else {
-                    if cards[chosenIndex].seen { score -= 1}
-                    if cards[potentialMatchIndex].seen { score -= 1}
+                    if cards[chosenIndex].seen { score -= max(10 - secondsSinceLastCardPick, 1) * 1}
+                    if cards[potentialMatchIndex].seen { score -= max(10 - secondsSinceLastCardPick, 1) * 1}
                 }
                 cards[chosenIndex].isFaceUp = true
                 cards[chosenIndex].seen = true
                 cards[potentialMatchIndex].seen = true
+                lastCardPickTime = DispatchTime.now()
             } else {
                 indexOfTheOneAndOnlyFaceUpCard = chosenIndex
             }
