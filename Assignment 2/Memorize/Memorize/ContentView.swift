@@ -12,6 +12,14 @@
     
      var body: some View {
         ScrollView {
+            Text(viewModel.themeName.capitalized)
+                .font(.largeTitle)
+            Text("Score: \(viewModel.score)")
+                .font(.title)
+            Button(action: viewModel.newGame) {
+                Text("New Game")
+            }
+            
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
                 ForEach(viewModel.cards) { card in
                     CardView(card: card)
@@ -22,7 +30,7 @@
                 }
             }
         }
-        .foregroundColor(.red)
+        .foregroundColor(viewModel.themeColor)
         .padding(.horizontal)
      }
 
