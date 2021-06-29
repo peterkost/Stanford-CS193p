@@ -12,11 +12,19 @@ struct ClassicSetGameView: View {
     
     var body: some View {
         ScrollView {
-            Rectangle()
-            RoundedRectangle(cornerRadius: 25, style: .continuous)
             ForEach(game.cards) { card in
                 let cardProperties = game.cardPropertiesDecoder(card.property1, card.property2, card.property3, card.property4)
-                ClassicSetGameCardView(properties: cardProperties)
+
+                ClassicSetGameCardView(properties: cardProperties) {
+                    switch cardProperties.shape {
+                    case .diamond:
+                        Circle()
+                    case .oval:
+                        Capsule()
+                    case .rectangle:
+                        Rectangle()
+                    }
+                }
             }
         }
     }

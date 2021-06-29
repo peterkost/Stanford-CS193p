@@ -7,8 +7,14 @@
 
 import SwiftUI
 
-struct ClassicSetGameCardView: View {
+struct ClassicSetGameCardView<Content: View>: View {
     let properties: ClassicSetGame.CardProperties
+    let content: Content
+
+    init(properties: ClassicSetGame.CardProperties, @ViewBuilder content: () -> Content) {
+        self.properties = properties
+        self.content = content()
+    }
     
     //  TODO: convert into viewbuilder to replace switch statement
     var body: some View {
@@ -18,14 +24,7 @@ struct ClassicSetGameCardView: View {
             shape.strokeBorder(lineWidth: 3)
             VStack {
                 ForEach(0..<properties.count) { _ in
-                    switch properties.shape {
-                    case .diamond:
-                        Circle()
-                    case .oval:
-                        Capsule()
-                    case .rectangle:
-                        Rectangle()
-                    }
+                    content
                 }
                 .padding()
 
@@ -41,6 +40,8 @@ struct ClassicSetGameCardView: View {
 struct ClassicSetGameCardView_Previews: PreviewProvider {
     static var previews: some View {
         let props = ClassicSetGame.CardProperties(color: Color.red, shape: ClassicSetGame.Shape.rectangle, opacity: 1, count: 2)
-        ClassicSetGameCardView(properties: props)
+        ClassicSetGameCardView(properties: props) {
+            Rectangle()
+        }
     }
 }
