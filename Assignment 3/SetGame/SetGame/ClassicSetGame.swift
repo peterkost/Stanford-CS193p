@@ -17,7 +17,7 @@ class ClassicSetGame: ObservableObject {
     
     func cardPropertiesDecoder(_ colors: SetGame.Property, _ shapes: SetGame.Property, _ opacities: SetGame.Property, _ counts: SetGame.Property) -> CardProperties {
         var color: Color
-        var shape: Shape
+        var shape: AnyShape
         var opacity: Double
         var count: Int
         
@@ -32,12 +32,13 @@ class ClassicSetGame: ObservableObject {
         
         switch shapes {
         case .a:
-            shape = .rectangle
+            shape = AnyShape(Rectangle())
         case .b:
-            shape = .oval
+            shape = AnyShape(Capsule())
         case .c:
-            shape = .diamond
+            shape = AnyShape(Diamond())
         }
+        
         
         switch opacities {
         case .a:
@@ -57,16 +58,12 @@ class ClassicSetGame: ObservableObject {
             count = 3
         }
         
-       return CardProperties(color: color, shape: shape, opacity: opacity, count: count)
-    }
-    
-    enum Shape {
-        case rectangle, diamond, oval
+        return CardProperties(color: color, shape: shape, opacity: opacity, count: count)
     }
     
     struct CardProperties {
         let color: Color
-        let shape: Shape
+        let shape: AnyShape
         let opacity: Double
         let count: Int
     }

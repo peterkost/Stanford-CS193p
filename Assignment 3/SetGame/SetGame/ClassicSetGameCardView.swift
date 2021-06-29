@@ -10,11 +10,10 @@ import SwiftUI
 struct ClassicSetGameCardView: View {
     let properties: ClassicSetGame.CardProperties
     let height: CGFloat
-
+    
     
     var body: some View {
         let cardShape = RoundedRectangle(cornerRadius: 20)
-        
         
         ZStack {
             cardShape
@@ -25,41 +24,21 @@ struct ClassicSetGameCardView: View {
             cardShape
                 .strokeBorder(lineWidth: 3)
             VStack {
-            ForEach(0..<properties.count) { _ in
-                ZStack {
-                    switch properties.shape {
-                    case .diamond:
-                        Diamond()
+                ForEach(0..<properties.count) { _ in
+                    ZStack {
+                        properties.shape
                             .fill()
                             .foregroundColor(properties.color)
                             .opacity(properties.opacity)
-                        Diamond()
-                            .stroke(lineWidth: 5)
-                            .foregroundColor(properties.color)
-                    case .oval:
-                        Capsule()
-                            .fill()
-                            .foregroundColor(properties.color)
-                            .opacity(properties.opacity)
-                        Capsule()
-                            .stroke(lineWidth: 5)
-                            .foregroundColor(properties.color)
-                    case .rectangle:
-                        Rectangle()
-                            .fill()
-                            .foregroundColor(properties.color)
-                            .opacity(properties.opacity)
-                        Rectangle()
+                        properties.shape
                             .stroke(lineWidth: 5)
                             .foregroundColor(properties.color)
                     }
-                        
-
-                }                }
+                    .frame(height: height / 6)
+                    .padding()
+                }
             }
             .padding()
-//            .foregroundColor(properties.color)
-//            .opacity(properties.opacity)
         }
         .aspectRatio(2/3, contentMode: .fit)
         .padding()
@@ -68,7 +47,7 @@ struct ClassicSetGameCardView: View {
 
 struct ClassicSetGameCardView_Previews: PreviewProvider {
     static var previews: some View {
-        let props = ClassicSetGame.CardProperties(color: Color.red, shape: ClassicSetGame.Shape.rectangle, opacity: 1, count: 2)
+        let props = ClassicSetGame.CardProperties(color: Color.red, shape: AnyShape(Rectangle()), opacity: 1, count: 2)
         ClassicSetGameCardView(properties: props, height: 500)
     }
 }
