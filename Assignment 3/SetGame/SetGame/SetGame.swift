@@ -28,7 +28,7 @@ struct SetGame {
         }
     }
     
-    struct Card {
+    struct Card: Identifiable {
         let id = UUID()
         var location =  Location.inDeck
         let property1: Property
