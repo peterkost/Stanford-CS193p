@@ -41,7 +41,7 @@ class ClassicSetGame: ObservableObject {
         
         switch opacities {
         case .a:
-            opacity = 0.1
+            opacity = 0.0
         case .b:
             opacity = 0.5
         case .c:
