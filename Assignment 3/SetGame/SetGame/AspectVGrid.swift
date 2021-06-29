@@ -4,6 +4,7 @@
 //
 //  Created by CS193p Instructor on 4/14/21.
 //  Copyright Stanford University 2021
+//  Modified by Peter Kostin
 //
 
 import SwiftUI
@@ -21,15 +22,25 @@ struct AspectVGrid<Item, ItemView>: View where ItemView: View, Item: Identifiabl
     
     var body: some View {
         GeometryReader { geometry in
-            VStack {
                 let width: CGFloat = widthThatFits(itemCount: items.count, in: geometry.size, itemAspectRatio: aspectRatio)
+            if width == 75 {
+                ScrollView {
                 LazyVGrid(columns: [adaptiveGridItem(width: width)], spacing: 0) {
                     ForEach(items) { item in
                         content(item).aspectRatio(aspectRatio, contentMode: .fit)
                     }
                 }
-                Spacer(minLength: 0)
+                }
+            } else {
+                LazyVGrid(columns: [adaptiveGridItem(width: width)], spacing: 0) {
+                    ForEach(items) { item in
+                        content(item).aspectRatio(aspectRatio, contentMode: .fit)
+                    }
+                }
             }
+            
+                Spacer(minLength: 0)
+            
         }
     }
     
@@ -54,13 +65,8 @@ struct AspectVGrid<Item, ItemView>: View where ItemView: View, Item: Identifiabl
         if columnCount > itemCount {
             columnCount = itemCount
         }
-        return floor(size.width / CGFloat(columnCount))
+        let res = floor(size.width / CGFloat(columnCount))
+        return res >= 75 ? res : 75
     }
 
 }
-
-//struct AspectVGrid_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AspectVGrid()
-//    }
-//}

@@ -12,7 +12,7 @@ struct ClassicSetGameCardView: View {
     
     
     var body: some View {
-        let cardShape = RoundedRectangle(cornerRadius: 20)
+        let cardShape = RoundedRectangle(cornerRadius: 10)
         
         ZStack {
             GeometryReader { geo in
@@ -30,20 +30,21 @@ struct ClassicSetGameCardView: View {
                                     .fill()
                                     .foregroundColor(properties.color)
                                     .opacity(properties.opacity)
+                                    .aspectRatio(2/1, contentMode: .fit)
                                 properties.shape
                                     .stroke(lineWidth: 5)
                                     .foregroundColor(properties.color)
+                                    .aspectRatio(2/1, contentMode: .fit)
                             }
                             .frame(height: geo.size.height / 6)
-                            .padding()
+//                            .padding()
                         }
                     }
-                    .padding()
+//                    .padding()
                 }
             }
         }
-        .aspectRatio(2/3, contentMode: .fit)
-        .padding()
+//        .padding()
     }
 }
 
