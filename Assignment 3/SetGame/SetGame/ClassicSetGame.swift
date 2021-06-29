@@ -15,45 +15,59 @@ class ClassicSetGame: ObservableObject {
     }
     
     
-    func cardPropertiesToView(property1 color: SetGame.Property, property2 shape: SetGame.Property, property3 fill: SetGame.Property, property4 count: SetGame.Property) -> String {
-        var res = ""
+    func cardPropertiesDecoder(_ colors: SetGame.Property, _ shapes: SetGame.Property, _ opacities: SetGame.Property, _ counts: SetGame.Property) -> CardProperties {
+        var color: Color
+        var shape: Shape
+        var opacity: Double
+        var count: Int
         
-        switch color {
+        switch colors {
         case .a:
-            res += "red "
+            color = .red
         case .b:
-            res += "green "
+            color = .green
         case .c:
-            res += "blue "
+            color = .blue
         }
         
-        switch shape {
+        switch shapes {
         case .a:
-            res += "rectangle"
+            shape = .rectangle
         case .b:
-            res += "diamond"
+            shape = .oval
         case .c:
-            res += " oval"
+            shape = .diamond
         }
         
-        switch fill {
+        switch opacities {
         case .a:
-            res += "clear "
+            opacity = 0
         case .b:
-            res += "half "
+            opacity = 0.5
         case .c:
-            res += " full "
+            opacity = 1
         }
         
-        switch count {
+        switch counts {
         case .a:
-            res += " one"
+            count = 1
         case .b:
-            res += " two"
+            count = 2
         case .c:
-            res += " three"
+            count = 3
         }
         
-        return res
+       return CardProperties(color: color, shape: shape, opacity: opacity, count: count)
+    }
+    
+    enum Shape {
+        case rectangle, diamond, oval
+    }
+    
+    struct CardProperties {
+        let color: Color
+        let shape: Shape
+        let opacity: Double
+        let count: Int
     }
 }

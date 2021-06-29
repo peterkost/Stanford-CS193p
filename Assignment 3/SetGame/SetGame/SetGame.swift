@@ -21,7 +21,7 @@ struct SetGame {
             }
         }
         
-        cards.shuffle()
+//        cards.shuffle()
         
         for n in 0..<12 {
             cards[n].location = .onBoard
