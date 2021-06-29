@@ -16,36 +16,8 @@ struct ClassicSetGameView: View {
                 ForEach(game.cards) { card in
                     let cardProperties = game.cardPropertiesDecoder(card.property1, card.property2, card.property3, card.property4)
 
-                    VStack {
-                        ClassicSetGameCardView(properties: cardProperties, height: geo.size.height) {
-                            switch cardProperties.shape {
-                            case .diamond:
-                                Diamond()
-                                    .fill()
-                                    .foregroundColor(cardProperties.color)
-                                    .opacity(cardProperties.opacity)
-                                Diamond()
-                                    .stroke(lineWidth: 5)
-                                    .foregroundColor(cardProperties.color)
-                            case .oval:
-                                Capsule()
-                                    .fill()
-                                    .foregroundColor(cardProperties.color)
-                                    .opacity(cardProperties.opacity)
-                                Capsule()
-                                    .stroke(lineWidth: 5)
-                                    .foregroundColor(cardProperties.color)
-                            case .rectangle:
-                                Rectangle()
-                                    .fill()
-                                    .foregroundColor(cardProperties.color)
-                                    .opacity(cardProperties.opacity)
-                                Rectangle()
-                                    .stroke(lineWidth: 5)
-                                    .foregroundColor(cardProperties.color)
-                            }
-                        }
-                    }
+                        ClassicSetGameCardView(properties: cardProperties, height: geo.size.height)
+
                 }
             }
     }

@@ -7,19 +7,15 @@
 
 import SwiftUI
 
-struct ClassicSetGameCardView<Content: View>: View {
+struct ClassicSetGameCardView: View {
     let properties: ClassicSetGame.CardProperties
     let height: CGFloat
-    let content: Content
 
-    init(properties: ClassicSetGame.CardProperties, height: CGFloat, @ViewBuilder content: () -> Content) {
-        self.properties = properties
-        self.height = height
-        self.content = content()
-    }
     
     var body: some View {
         let cardShape = RoundedRectangle(cornerRadius: 20)
+        
+        
         ZStack {
             cardShape
                 .fill()
@@ -31,9 +27,33 @@ struct ClassicSetGameCardView<Content: View>: View {
             VStack {
             ForEach(0..<properties.count) { _ in
                 ZStack {
-
-                    content
-                        .frame(height: height / 6)
+                    switch properties.shape {
+                    case .diamond:
+                        Diamond()
+                            .fill()
+                            .foregroundColor(properties.color)
+                            .opacity(properties.opacity)
+                        Diamond()
+                            .stroke(lineWidth: 5)
+                            .foregroundColor(properties.color)
+                    case .oval:
+                        Capsule()
+                            .fill()
+                            .foregroundColor(properties.color)
+                            .opacity(properties.opacity)
+                        Capsule()
+                            .stroke(lineWidth: 5)
+                            .foregroundColor(properties.color)
+                    case .rectangle:
+                        Rectangle()
+                            .fill()
+                            .foregroundColor(properties.color)
+                            .opacity(properties.opacity)
+                        Rectangle()
+                            .stroke(lineWidth: 5)
+                            .foregroundColor(properties.color)
+                    }
+                        
 
                 }                }
             }
@@ -49,14 +69,6 @@ struct ClassicSetGameCardView<Content: View>: View {
 struct ClassicSetGameCardView_Previews: PreviewProvider {
     static var previews: some View {
         let props = ClassicSetGame.CardProperties(color: Color.red, shape: ClassicSetGame.Shape.rectangle, opacity: 1, count: 2)
-        ClassicSetGameCardView(properties: props, height: 500) {
-            Diamond()
-                .fill()
-                .foregroundColor(.red)
-                .opacity(0.5)
-            Diamond()
-                .stroke(lineWidth: 5)
-                .foregroundColor(.red)
-        }
+        ClassicSetGameCardView(properties: props, height: 500)
     }
 }
