@@ -11,22 +11,26 @@ struct ClassicSetGameView: View {
     @ObservedObject var game: ClassicSetGame
     
     var body: some View {
-        ScrollView {
-            ForEach(game.cards) { card in
-                let cardProperties = game.cardPropertiesDecoder(card.property1, card.property2, card.property3, card.property4)
+        GeometryReader { geo in
+            ScrollView {
+                ForEach(game.cards) { card in
+                    let cardProperties = game.cardPropertiesDecoder(card.property1, card.property2, card.property3, card.property4)
 
-                ClassicSetGameCardView(properties: cardProperties) {
-                    switch cardProperties.shape {
-                    case .diamond:
-                        Circle()
-                    case .oval:
-                        Capsule()
-                    case .rectangle:
-                        Rectangle()
+                    VStack {
+                        ClassicSetGameCardView(properties: cardProperties, height: geo.size.height) {
+                            switch cardProperties.shape {
+                            case .diamond:
+                                Diamond()
+                            case .oval:
+                                Capsule()
+                            case .rectangle:
+                                Rectangle()
+                            }
+                        }
                     }
                 }
             }
-        }
+    }
     }
 }
 
