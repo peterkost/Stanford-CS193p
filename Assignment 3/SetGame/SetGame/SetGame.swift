@@ -68,6 +68,12 @@ struct SetGame {
     }
     
     mutating func dealCards() {
+        if validSetSelected == true {
+            for i in chosenCardsIndices {
+                cards[i].isSelected = false
+                cards[i].location = .discarded
+            }
+        }
         var dealt = 0
         for i in 0..<cards.count where cards[i].location == .inDeck {
             cards[i].location = .onBoard
