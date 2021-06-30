@@ -26,16 +26,8 @@ struct SetGame {
         return nil
     }
     
-    init() {
-        for i in Property.allCases {
-            for j in Property.allCases {
-                for k in Property.allCases {
-                    for l in Property.allCases {
-                        cards.append(Card(property1: i, property2: j, property3: k, property4: l))
-                    }
-                }
-            }
-        }
+    init(createCards: () -> [Card]) {
+        cards = createCards()
         
         cards.shuffle()
         
@@ -86,37 +78,26 @@ struct SetGame {
     }
     
     func validSet() -> Bool {
-        var property1Values = [Int]()
-        var property2Values = [Int]()
-        var property3Values = [Int]()
-        var property4Values = [Int]()
+        var res = true
         
-        for i in chosenCardsIndices {
-            let card = cards[i]
-            print(card)
-            property1Values.append(card.property1.hashValue)
-            property2Values.append(card.property2.hashValue)
-            property3Values.append(card.property3.hashValue)
-            property4Values.append(card.property4.hashValue)
+        for propertyIndex in 0..<cards[0].properties.count {
+            var curProperty = Set<Int>()
+            for cardIndex in chosenCardsIndices {
+                curProperty.insert(cards[cardIndex].properties[propertyIndex].hashValue)
+            }
+            res = res && (curProperty.count == 1 || curProperty.count == 3)
+            if !res {
+                return false
+            }
         }
-        
-        // either the values were all the same or all different
-        let property1IsValid = Set(property1Values).count == 1 || Set(property1Values).count == 3
-        let property2IsValid = Set(property2Values).count == 1 || Set(property2Values).count == 3
-        let property3IsValid = Set(property3Values).count == 1 || Set(property3Values).count == 3
-        let property4IsValid = Set(property4Values).count == 1 || Set(property4Values).count == 3
-        
-        return property1IsValid && property2IsValid && property3IsValid && property4IsValid
+        return true
     }
     
     struct Card: Identifiable {
         let id = UUID()
-        var location =  Location.inDeck
+        var location = Location.inDeck
         var isSelected = false
-        let property1: Property
-        let property2: Property
-        let property3: Property
-        let property4: Property
+        let properties: [Property]
     }
     
     enum Location {

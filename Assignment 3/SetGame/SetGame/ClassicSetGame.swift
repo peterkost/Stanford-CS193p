@@ -8,7 +8,22 @@
 import SwiftUI
 
 class ClassicSetGame: ObservableObject {
-    @Published private var model = SetGame()
+    static func generateCards() -> [SetGame.Card] {
+        var cards = [SetGame.Card]()
+        for i in SetGame.Property.allCases {
+            for j in SetGame.Property.allCases {
+                for k in SetGame.Property.allCases {
+                    for l in SetGame.Property.allCases {
+                        let properties = [i, j, k, l]
+                        cards.append(SetGame.Card(properties: properties))
+                    }
+                }
+            }
+        }
+        return cards
+    }
+    
+    @Published private var model = SetGame(createCards: generateCards)
     
     var cards: [SetGame.Card] {
         model.cards
@@ -33,6 +48,7 @@ class ClassicSetGame: ObservableObject {
     
     // MARK: - Intent
     
+    
     func choose(_ card: SetGame.Card) {
         model.choose(card)
     }
@@ -42,17 +58,19 @@ class ClassicSetGame: ObservableObject {
     }
     
     func newGame() {
-        model = SetGame()
+        model = SetGame(createCards: ClassicSetGame.generateCards)
     }
     
     
-    func cardPropertiesDecoder(_ colors: SetGame.Property, _ shapes: SetGame.Property, _ opacities: SetGame.Property, _ counts: SetGame.Property) -> CardProperties {
+    func cardPropertiesDecoder(_ properties: [SetGame.Property]) -> CardProperties {
+        
+        // _ colors: SetGame.Property, _ shapes: SetGame.Property, _ opacities: SetGame.Property, _ counts: SetGame.Property
         var color: Color
         var shape: AnyShape
         var opacity: Double
         var count: Int
         
-        switch colors {
+        switch properties[0] {
         case .a:
             color = .red
         case .b:
@@ -61,7 +79,7 @@ class ClassicSetGame: ObservableObject {
             color = .blue
         }
         
-        switch shapes {
+        switch properties[1] {
         case .a:
             shape = AnyShape(Rectangle())
         case .b:
@@ -71,7 +89,7 @@ class ClassicSetGame: ObservableObject {
         }
         
         
-        switch opacities {
+        switch properties[2] {
         case .a:
             opacity = 0.0
         case .b:
@@ -80,7 +98,7 @@ class ClassicSetGame: ObservableObject {
             opacity = 1
         }
         
-        switch counts {
+        switch properties[3] {
         case .a:
             count = 1
         case .b:
