@@ -12,7 +12,7 @@ struct ClassicSetGameView: View {
     
     var body: some View {
         VStack {
-            AspectVGrid(items: game.cards, aspectRatio: 2/3) { card in
+            AspectVGrid(items: game.cardsOnBoard, aspectRatio: 2/3) { card in
                 let cardProperties = game.cardPropertiesDecoder(card.properties)
                 ClassicSetGameCardView(card: card, properties: cardProperties, validSetSelected: game.validSetSelected)
                     .onTapGesture {

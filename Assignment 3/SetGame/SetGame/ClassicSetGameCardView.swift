@@ -14,53 +14,81 @@ struct ClassicSetGameCardView: View {
     
     
     var body: some View {
-        if card.location == .onBoard {
-            let cardShape = RoundedRectangle(cornerRadius: 10)
-            ZStack {
-                GeometryReader { geo in
-                    ZStack {
-                        cardShape
-                            .fill()
-                            .foregroundColor(.white)
-
-                        if card.isSelected {
-                            if let setSelected = validSetSelected {
-                                if setSelected {
-                                    cardShape
-                                        .strokeBorder(lineWidth: 5)
-                                        .foregroundColor(.green)
-                                } else {
-                                    cardShape
-                                        .strokeBorder(lineWidth: 5)
-                                        .foregroundColor(.red)
-                                }
-            
+        let cardShape = RoundedRectangle(cornerRadius: 10)
+        ZStack {
+            GeometryReader { geo in
+                ZStack {
+                    cardShape
+                        .fill()
+                        .foregroundColor(.white)
+                    
+                    if card.isSelected {
+                        if let setSelected = validSetSelected {
+                            if setSelected {
+                                cardShape
+                                    .strokeBorder(lineWidth: 5)
+                                    .foregroundColor(.green)
                             } else {
                                 cardShape
                                     .strokeBorder(lineWidth: 5)
-                                    .foregroundColor(.yellow)
+                                    .foregroundColor(.red)
                             }
-
+                            
                         } else {
                             cardShape
-                                .strokeBorder(lineWidth: 3)
+                                .strokeBorder(lineWidth: 5)
+                                .foregroundColor(.yellow)
                         }
-
-                        VStack {
-                            ForEach(0..<properties.count) { _ in
-                                ZStack {
-                                    properties.shape
-                                        .fill()
-                                        .foregroundColor(properties.color)
-                                        .opacity(properties.opacity)
-                                        .aspectRatio(2/1, contentMode: .fit)
-                                    properties.shape
-                                        .stroke(lineWidth: 3)
-                                        .foregroundColor(properties.color)
-                                        .aspectRatio(2/1, contentMode: .fit)
-                                }
-                                .frame(height: geo.size.height / 6)
+                        
+                    } else {
+                        cardShape
+                            .strokeBorder(lineWidth: 3)
+                    }
+                    
+                    VStack {
+                        // ForEach(0..<properties.count) was causing issues when scrolling and starting a new game.
+                        // Couldn't fix it so I just hard coded the three shapes
+                        ZStack {
+                            properties.shape
+                                .fill()
+                                .foregroundColor(properties.color)
+                                .opacity(properties.opacity)
+                                .aspectRatio(2/1, contentMode: .fit)
+                            properties.shape
+                                .stroke(lineWidth: 3)
+                                .foregroundColor(properties.color)
+                                .aspectRatio(2/1, contentMode: .fit)
+                        }
+                        .frame(height: geo.size.height / 6)
+                        
+                        if properties.count == 2 {
+                            ZStack {
+                                properties.shape
+                                    .fill()
+                                    .foregroundColor(properties.color)
+                                    .opacity(properties.opacity)
+                                    .aspectRatio(2/1, contentMode: .fit)
+                                properties.shape
+                                    .stroke(lineWidth: 3)
+                                    .foregroundColor(properties.color)
+                                    .aspectRatio(2/1, contentMode: .fit)
                             }
+                            .frame(height: geo.size.height / 6)
+                        }
+                        
+                        if properties.count == 3 {
+                            ZStack {
+                                properties.shape
+                                    .fill()
+                                    .foregroundColor(properties.color)
+                                    .opacity(properties.opacity)
+                                    .aspectRatio(2/1, contentMode: .fit)
+                                properties.shape
+                                    .stroke(lineWidth: 3)
+                                    .foregroundColor(properties.color)
+                                    .aspectRatio(2/1, contentMode: .fit)
+                            }
+                            .frame(height: geo.size.height / 6)
                         }
                     }
                 }
