@@ -10,9 +10,9 @@ import SwiftUI
 class ClassicSetGame: ObservableObject {
     @Published private var model = SetGame()
     
-//    var cards: [SetGame.Card] {
-//        model.cards
-//    }
+    var cards: [SetGame.Card] {
+        model.cards
+    }
     
     // if we pass in all cards to AspectVGrid then it will always size them to show 81 cards
     var cardsOnBoard: [SetGame.Card] {
@@ -23,10 +23,22 @@ class ClassicSetGame: ObservableObject {
         return res
     }
     
+    var deckEmpty: Bool {
+        model.deckEmpty
+    }
+    
+    var validSetSelected: Bool? {
+        model.validSetSelected
+    }
+    
     // MARK: - Intent
     
     func choose(_ card: SetGame.Card) {
         model.choose(card)
+    }
+    
+    func dealCards() {
+        model.dealCards()
     }
     
     

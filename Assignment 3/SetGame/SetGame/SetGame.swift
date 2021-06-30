@@ -18,6 +18,14 @@ struct SetGame {
         return res
     }
     
+    private(set) var deckEmpty = false
+    var validSetSelected: Bool? {
+        if chosenCardsIndices.count == 3 {
+            return validSet()
+        }
+        return nil
+    }
+    
     init() {
         for i in Property.allCases {
             for j in Property.allCases {
@@ -56,6 +64,7 @@ struct SetGame {
                 cards[i].isSelected.toggle()
             }
         }
+        print(chosenCardsIndices)
     }
     
     mutating func dealCards() {
@@ -67,6 +76,7 @@ struct SetGame {
                 return
             }
         }
+        deckEmpty = true
     }
     
     func validSet() -> Bool {
@@ -77,6 +87,7 @@ struct SetGame {
         
         for i in chosenCardsIndices {
             let card = cards[i]
+            print(card)
             property1Values.append(card.property1.hashValue)
             property2Values.append(card.property2.hashValue)
             property3Values.append(card.property3.hashValue)

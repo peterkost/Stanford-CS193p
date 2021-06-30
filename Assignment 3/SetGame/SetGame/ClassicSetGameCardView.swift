@@ -10,6 +10,7 @@ import SwiftUI
 struct ClassicSetGameCardView: View {
     let card: SetGame.Card
     let properties: ClassicSetGame.CardProperties
+    let validSetSelected: Bool?
     
     
     var body: some View {
@@ -23,9 +24,23 @@ struct ClassicSetGameCardView: View {
                             .foregroundColor(.white)
 
                         if card.isSelected {
-                            cardShape
-                                .strokeBorder(lineWidth: 5)
-                                .foregroundColor(.yellow)
+                            if let setSelected = validSetSelected {
+                                if setSelected {
+                                    cardShape
+                                        .strokeBorder(lineWidth: 5)
+                                        .foregroundColor(.green)
+                                } else {
+                                    cardShape
+                                        .strokeBorder(lineWidth: 5)
+                                        .foregroundColor(.red)
+                                }
+            
+                            } else {
+                                cardShape
+                                    .strokeBorder(lineWidth: 5)
+                                    .foregroundColor(.yellow)
+                            }
+
                         } else {
                             cardShape
                                 .strokeBorder(lineWidth: 3)
