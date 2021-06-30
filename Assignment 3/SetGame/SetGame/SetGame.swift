@@ -28,9 +28,16 @@ struct SetGame {
         }
     }
     
+    mutating func choose(_ card: Card) {
+        if let i = cards.firstIndex(where: { $0.id == card.id}) {
+            cards[i].isSelected.toggle()
+        }
+    }
+    
     struct Card: Identifiable {
         let id = UUID()
         var location =  Location.inDeck
+        var isSelected = false
         let property1: Property
         let property2: Property
         let property3: Property

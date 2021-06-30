@@ -14,6 +14,12 @@ class ClassicSetGame: ObservableObject {
         model.cards
     }
     
+    // MARK: - Intent
+    
+    func choose(_ card: SetGame.Card) {
+        model.choose(card)
+    }
+    
     
     func cardPropertiesDecoder(_ colors: SetGame.Property, _ shapes: SetGame.Property, _ opacities: SetGame.Property, _ counts: SetGame.Property) -> CardProperties {
         var color: Color
