@@ -41,6 +41,10 @@ class ClassicSetGame: ObservableObject {
         model.dealCards()
     }
     
+    func newGame() {
+        model = SetGame()
+    }
+    
     
     func cardPropertiesDecoder(_ colors: SetGame.Property, _ shapes: SetGame.Property, _ opacities: SetGame.Property, _ counts: SetGame.Property) -> CardProperties {
         var color: Color

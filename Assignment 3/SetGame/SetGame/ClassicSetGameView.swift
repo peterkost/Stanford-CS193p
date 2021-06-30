@@ -25,6 +25,10 @@ struct ClassicSetGameView: View {
                     game.dealCards()
                 }
             }
+            
+            Button("New Game") {
+                game.newGame()
+            }
         }
     }
 }
