@@ -9,6 +9,14 @@ import Foundation
 
 struct SetGame {
     private(set) var cards = [Card]()
+    private var chosenCardsIndices: [Int] {
+        var res = [Int]()
+        
+        for i in 0..<cards.count where cards[i].isSelected {
+            res.append(i)
+        }
+        return res
+    }
     
     init() {
         for i in Property.allCases {
@@ -30,8 +38,58 @@ struct SetGame {
     
     mutating func choose(_ card: Card) {
         if let i = cards.firstIndex(where: { $0.id == card.id}) {
-            cards[i].isSelected.toggle()
+            if chosenCardsIndices.count == 3 {
+                if validSet() {
+                    for i in chosenCardsIndices {
+                        cards[i].isSelected = false
+                        cards[i].location = .discarded
+                    }
+                    dealCards()
+                } else {
+                    for i in chosenCardsIndices {
+                        cards[i].isSelected = false
+                    }
+                    cards[i].isSelected.toggle()
+                }
+ 
+            } else {
+                cards[i].isSelected.toggle()
+            }
         }
+    }
+    
+    mutating func dealCards() {
+        var dealt = 0
+        for i in 0..<cards.count where cards[i].location == .inDeck {
+            cards[i].location = .onBoard
+            dealt += 1
+            if dealt == 3 {
+                return
+            }
+        }
+    }
+    
+    func validSet() -> Bool {
+        var property1Values = [Int]()
+        var property2Values = [Int]()
+        var property3Values = [Int]()
+        var property4Values = [Int]()
+        
+        for i in chosenCardsIndices {
+            let card = cards[i]
+            property1Values.append(card.property1.hashValue)
+            property2Values.append(card.property2.hashValue)
+            property3Values.append(card.property3.hashValue)
+            property4Values.append(card.property4.hashValue)
+        }
+        
+        // either the values were all the same or all different
+        let property1IsValid = Set(property1Values).count == 1 || Set(property1Values).count == 3
+        let property2IsValid = Set(property2Values).count == 1 || Set(property2Values).count == 3
+        let property3IsValid = Set(property3Values).count == 1 || Set(property3Values).count == 3
+        let property4IsValid = Set(property4Values).count == 1 || Set(property4Values).count == 3
+        
+        return property1IsValid && property2IsValid && property3IsValid && property4IsValid
     }
     
     struct Card: Identifiable {
