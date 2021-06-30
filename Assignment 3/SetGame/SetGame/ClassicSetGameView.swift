@@ -11,7 +11,7 @@ struct ClassicSetGameView: View {
     @ObservedObject var game: ClassicSetGame
     
     var body: some View {
-        let short = Array(game.cards.prefix(40))
+        let short = Array(game.cards.prefix(12))
         AspectVGrid(items: short, aspectRatio: 2/3) { card in
             let cardProperties = game.cardPropertiesDecoder(card.property1, card.property2, card.property3, card.property4)
             ClassicSetGameCardView(properties: cardProperties)

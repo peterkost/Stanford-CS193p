@@ -32,19 +32,16 @@ struct ClassicSetGameCardView: View {
                                     .opacity(properties.opacity)
                                     .aspectRatio(2/1, contentMode: .fit)
                                 properties.shape
-                                    .stroke(lineWidth: 5)
+                                    .stroke(lineWidth: 3)
                                     .foregroundColor(properties.color)
                                     .aspectRatio(2/1, contentMode: .fit)
                             }
                             .frame(height: geo.size.height / 6)
-//                            .padding()
                         }
                     }
-//                    .padding()
                 }
             }
         }
-//        .padding()
     }
 }
 
