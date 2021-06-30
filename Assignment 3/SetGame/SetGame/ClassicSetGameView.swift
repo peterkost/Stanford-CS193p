@@ -11,7 +11,7 @@ struct ClassicSetGameView: View {
     @ObservedObject var game: ClassicSetGame
     
     var body: some View {
-        AspectVGrid(items: game.cards, aspectRatio: 2/3) { card in
+        AspectVGrid(items: game.cardsOnBoard, aspectRatio: 2/3) { card in
             let cardProperties = game.cardPropertiesDecoder(card.property1, card.property2, card.property3, card.property4)
             ClassicSetGameCardView(card: card, properties: cardProperties)
                 .onTapGesture {

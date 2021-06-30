@@ -10,8 +10,17 @@ import SwiftUI
 class ClassicSetGame: ObservableObject {
     @Published private var model = SetGame()
     
-    var cards: [SetGame.Card] {
-        model.cards
+//    var cards: [SetGame.Card] {
+//        model.cards
+//    }
+    
+    // if we pass in all cards to AspectVGrid then it will always size them to show 81 cards
+    var cardsOnBoard: [SetGame.Card] {
+        var res = [SetGame.Card]()
+        for card in model.cards where card.location == .onBoard {
+            res.append(card)
+        }
+        return res
     }
     
     // MARK: - Intent
