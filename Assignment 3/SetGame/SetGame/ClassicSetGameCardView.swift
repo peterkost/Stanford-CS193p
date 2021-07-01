@@ -14,7 +14,7 @@ struct ClassicSetGameCardView: View {
     
     
     var body: some View {
-        let cardShape = RoundedRectangle(cornerRadius: 10)
+        let cardShape = RoundedRectangle(cornerRadius: CardConstants.cornerRadius)
         ZStack {
             GeometryReader { geo in
                 ZStack {
@@ -26,23 +26,23 @@ struct ClassicSetGameCardView: View {
                         if let setSelected = validSetSelected {
                             if setSelected {
                                 cardShape
-                                    .strokeBorder(lineWidth: 5)
-                                    .foregroundColor(.green)
+                                    .strokeBorder(lineWidth: CardConstants.selectedLineWidth)
+                                    .foregroundColor(CardConstants.selectedSetColor)
                             } else {
                                 cardShape
-                                    .strokeBorder(lineWidth: 5)
-                                    .foregroundColor(.red)
+                                    .strokeBorder(lineWidth: CardConstants.selectedLineWidth)
+                                    .foregroundColor(CardConstants.selectedInvalidSetColor)
                             }
                             
                         } else {
                             cardShape
-                                .strokeBorder(lineWidth: 5)
-                                .foregroundColor(.yellow)
+                                .strokeBorder(lineWidth: CardConstants.selectedLineWidth)
+                                .foregroundColor(CardConstants.selectedCardColor)
                         }
                         
                     } else {
                         cardShape
-                            .strokeBorder(lineWidth: 3)
+                            .strokeBorder(lineWidth: CardConstants.standardLineWidth)
                     }
                     
                     VStack {
@@ -53,13 +53,13 @@ struct ClassicSetGameCardView: View {
                                 .fill()
                                 .foregroundColor(properties.color)
                                 .opacity(properties.opacity)
-                                .aspectRatio(2/1, contentMode: .fit)
+                                .aspectRatio(CardConstants.contentAspectRatio, contentMode: .fit)
                             properties.shape
-                                .stroke(lineWidth: 3)
+                                .stroke(lineWidth: CardConstants.standardLineWidth)
                                 .foregroundColor(properties.color)
-                                .aspectRatio(2/1, contentMode: .fit)
+                                .aspectRatio(CardConstants.contentAspectRatio, contentMode: .fit)
                         }
-                        .frame(height: geo.size.height / 6)
+                        .frame(height: geo.size.height / CardConstants.frameScale)
                         
                         if properties.count == 2 {
                             ZStack {
@@ -67,13 +67,13 @@ struct ClassicSetGameCardView: View {
                                     .fill()
                                     .foregroundColor(properties.color)
                                     .opacity(properties.opacity)
-                                    .aspectRatio(2/1, contentMode: .fit)
+                                    .aspectRatio(CardConstants.contentAspectRatio, contentMode: .fit)
                                 properties.shape
-                                    .stroke(lineWidth: 3)
+                                    .stroke(lineWidth: CardConstants.standardLineWidth)
                                     .foregroundColor(properties.color)
-                                    .aspectRatio(2/1, contentMode: .fit)
+                                    .aspectRatio(CardConstants.contentAspectRatio, contentMode: .fit)
                             }
-                            .frame(height: geo.size.height / 6)
+                            .frame(height: geo.size.height / CardConstants.frameScale)
                         }
                         
                         if properties.count == 3 {
@@ -82,18 +82,30 @@ struct ClassicSetGameCardView: View {
                                     .fill()
                                     .foregroundColor(properties.color)
                                     .opacity(properties.opacity)
-                                    .aspectRatio(2/1, contentMode: .fit)
+                                    .aspectRatio(CardConstants.contentAspectRatio, contentMode: .fit)
                                 properties.shape
-                                    .stroke(lineWidth: 3)
+                                    .stroke(lineWidth: CardConstants.standardLineWidth)
                                     .foregroundColor(properties.color)
-                                    .aspectRatio(2/1, contentMode: .fit)
+                                    .aspectRatio(CardConstants.contentAspectRatio, contentMode: .fit)
                             }
-                            .frame(height: geo.size.height / 6)
+                            .frame(height: geo.size.height / CardConstants.frameScale)
                         }
                     }
                 }
             }
         }
+    }
+    
+    
+    private struct CardConstants {
+        static let cornerRadius: CGFloat = 10
+        static let selectedLineWidth: CGFloat = 5
+        static let standardLineWidth: CGFloat = 3
+        static let contentAspectRatio: CGFloat = 2/1
+        static let frameScale: CGFloat = 6
+        static let selectedCardColor: Color = .yellow
+        static let selectedSetColor: Color = .green
+        static let selectedInvalidSetColor: Color = .red
     }
 }
 

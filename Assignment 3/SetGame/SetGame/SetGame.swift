@@ -12,7 +12,7 @@ struct SetGame {
     private var chosenCardsIndices: [Int] {
         var res = [Int]()
         
-        for i in 0..<cards.count where cards[i].isSelected {
+        for i in cards.indices where cards[i].isSelected {
             res.append(i)
         }
         return res
@@ -67,7 +67,7 @@ struct SetGame {
             }
         }
         var dealt = 0
-        for i in 0..<cards.count where cards[i].location == .inDeck {
+        for i in cards.indices where cards[i].location == .inDeck {
             cards[i].location = .onBoard
             dealt += 1
             if dealt == 3 {
