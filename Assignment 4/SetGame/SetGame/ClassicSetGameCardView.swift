@@ -12,6 +12,15 @@ struct ClassicSetGameCardView: View {
     let properties: ClassicSetGame.CardProperties
     let validSetSelected: Bool?
     
+    var opacity: Double {
+        if card.isSelected {
+            if validSetSelected != nil {
+                    return 0.5
+            }
+        }
+        return 0
+    }
+    
     
     var body: some View {
         let cardShape = RoundedRectangle(cornerRadius: CardConstants.cornerRadius)
@@ -23,36 +32,23 @@ struct ClassicSetGameCardView: View {
                         .foregroundColor(.white)
                     
                     if card.isSelected {
-                        if let setSelected = validSetSelected {
-                            if setSelected {
-                                cardShape
-                                    .strokeBorder(lineWidth: CardConstants.selectedLineWidth)
-                                    .foregroundColor(CardConstants.selectedSetColor)
-                            } else {
-                                cardShape
-                                    .strokeBorder(lineWidth: CardConstants.selectedLineWidth)
-                                    .foregroundColor(CardConstants.selectedInvalidSetColor)
-                            }
-                            
-                        } else {
-                            cardShape
-                                .strokeBorder(lineWidth: CardConstants.selectedLineWidth)
-                                .foregroundColor(CardConstants.selectedCardColor)
-                        }
-                        
+                        cardShape
+                            .strokeBorder(lineWidth: CardConstants.selectedLineWidth)
+                            .foregroundColor(CardConstants.selectedCardColor)
                     } else {
                         cardShape
                             .strokeBorder(lineWidth: CardConstants.standardLineWidth)
                     }
                     
                     VStack {
-                        ForEach(0..<properties.count, id: \.self) { i in
+                        ForEach(0..<properties.count, id: \.self) { _ in
                             ZStack {
                                 properties.shape
                                     .fill()
                                     .foregroundColor(properties.color)
                                     .opacity(properties.opacity)
                                     .aspectRatio(CardConstants.contentAspectRatio, contentMode: .fit)
+                                
                                 properties.shape
                                     .stroke(lineWidth: CardConstants.standardLineWidth)
                                     .foregroundColor(properties.color)
@@ -61,11 +57,18 @@ struct ClassicSetGameCardView: View {
                             .frame(height: geo.size.height / CardConstants.frameScale)
                         }
                     }
+                    
+                    // colors selected set red/green
+                    cardShape
+                        .fill()
+                        .foregroundColor(validSetSelected == nil ? .clear : validSetSelected! ? .green : .red)
+                        .opacity(opacity)
+                        .animation(validSetSelected == nil ? Animation.easeInOut(duration: 0) : Animation.easeInOut(duration: 1).repeatForever())
+
                 }
             }
         }
     }
-    
     
     private struct CardConstants {
         static let cornerRadius: CGFloat = 10

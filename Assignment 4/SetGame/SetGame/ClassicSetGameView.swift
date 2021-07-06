@@ -16,13 +16,17 @@ struct ClassicSetGameView: View {
                 let cardProperties = game.cardPropertiesDecoder(card.properties)
                 ClassicSetGameCardView(card: card, properties: cardProperties, validSetSelected: game.validSetSelected)
                     .onTapGesture {
-                        game.choose(card)
+                        withAnimation {
+                            game.choose(card)
+                        }
                     }
             }
             
             if !game.deckEmpty {
                 Button("Deal 3") {
+                    withAnimation {
                     game.dealCards()
+                    }
                 }
             }
             
