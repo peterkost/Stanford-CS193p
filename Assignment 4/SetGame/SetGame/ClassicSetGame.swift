@@ -38,6 +38,22 @@ class ClassicSetGame: ObservableObject {
         return res
     }
     
+    var cardsInDeck: [SetGame.Card] {
+        var res = [SetGame.Card]()
+        for card in model.cards where card.location == .inDeck {
+            res.append(card)
+        }
+        return res
+    }
+    
+    var discardedCards: [SetGame.Card] {
+        var res = [SetGame.Card]()
+        for card in model.cards where card.location == .discarded {
+            res.append(card)
+        }
+        return res
+    }
+    
     var deckEmpty: Bool {
         model.deckEmpty
     }

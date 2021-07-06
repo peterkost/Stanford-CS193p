@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ClassicSetGameView: View {
     @ObservedObject var game: ClassicSetGame
+    @State private var lastTouchedCard: SetGame.Card?
     
     var body: some View {
         VStack {
@@ -18,17 +19,31 @@ struct ClassicSetGameView: View {
                     .onTapGesture {
                         withAnimation {
                             game.choose(card)
+
                         }
                     }
             }
             
-            if !game.deckEmpty {
-                Button("Deal 3") {
-                    withAnimation {
-                    game.dealCards()
-                    }
+            HStack {
+                if !game.deckEmpty {
+                    RoundedRectangle(cornerRadius: 10)
+                        .aspectRatio(2/3, contentMode: .fit)
+                        .foregroundColor(.yellow)
+                        .onTapGesture {
+                            withAnimation {
+                                game.dealCards()
+                            }
+                        }
+                }
+                
+                if !game.discardedCards.isEmpty {
+                    let card = game.discardedCards[0]
+                    let cardProperties = game.cardPropertiesDecoder(card.properties)
+                    ClassicSetGameCardView(card: card, properties: cardProperties, validSetSelected: game.validSetSelected)
+                        .aspectRatio(2/3, contentMode: .fit)
                 }
             }
+            .frame(height: 150)
             
             Button("New Game") {
                 game.newGame()
