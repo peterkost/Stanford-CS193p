@@ -46,23 +46,7 @@ struct ClassicSetGameCardView: View {
                     }
                     
                     VStack {
-                        // ForEach(0..<properties.count) was causing issues when scrolling and starting a new game.
-                        // Couldn't fix it so I just hard coded the three shapes
-                        ZStack {
-                            properties.shape
-                                .fill()
-                                .foregroundColor(properties.color)
-                                .opacity(properties.opacity)
-                                .aspectRatio(CardConstants.contentAspectRatio, contentMode: .fit)
-                            properties.shape
-                                .stroke(lineWidth: CardConstants.standardLineWidth)
-                                .foregroundColor(properties.color)
-                                .aspectRatio(CardConstants.contentAspectRatio, contentMode: .fit)
-                            Text("one")
-                        }
-                        .frame(height: geo.size.height / CardConstants.frameScale)
-                        
-                        if properties.count > 1 {
+                        ForEach(0..<properties.count, id: \.self) { i in
                             ZStack {
                                 properties.shape
                                     .fill()
@@ -73,23 +57,6 @@ struct ClassicSetGameCardView: View {
                                     .stroke(lineWidth: CardConstants.standardLineWidth)
                                     .foregroundColor(properties.color)
                                     .aspectRatio(CardConstants.contentAspectRatio, contentMode: .fit)
-                                Text("Two")
-                            }
-                            .frame(height: geo.size.height / CardConstants.frameScale)
-                        }
-                        
-                        if properties.count > 2 {
-                            ZStack {
-                                properties.shape
-                                    .fill()
-                                    .foregroundColor(properties.color)
-                                    .opacity(properties.opacity)
-                                    .aspectRatio(CardConstants.contentAspectRatio, contentMode: .fit)
-                                properties.shape
-                                    .stroke(lineWidth: CardConstants.standardLineWidth)
-                                    .foregroundColor(properties.color)
-                                    .aspectRatio(CardConstants.contentAspectRatio, contentMode: .fit)
-                                Text("Three")
                             }
                             .frame(height: geo.size.height / CardConstants.frameScale)
                         }

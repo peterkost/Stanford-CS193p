@@ -38,7 +38,7 @@ struct SetGame {
     
     mutating func choose(_ card: Card) {
         if let i = cards.firstIndex(where: { $0.id == card.id}) {
-            print(ClassicSetGame().cardPropertiesDecoder(cards[i].properties))
+//            print(ClassicSetGame().cardPropertiesDecoder(cards[i].properties))
             if chosenCardsIndices.count == 3 {
                 if validSet() {
                     for i in chosenCardsIndices {
