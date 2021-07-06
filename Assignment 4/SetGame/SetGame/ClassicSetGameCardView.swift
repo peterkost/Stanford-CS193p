@@ -58,10 +58,11 @@ struct ClassicSetGameCardView: View {
                                 .stroke(lineWidth: CardConstants.standardLineWidth)
                                 .foregroundColor(properties.color)
                                 .aspectRatio(CardConstants.contentAspectRatio, contentMode: .fit)
+                            Text("one")
                         }
                         .frame(height: geo.size.height / CardConstants.frameScale)
                         
-                        if properties.count == 2 {
+                        if properties.count > 1 {
                             ZStack {
                                 properties.shape
                                     .fill()
@@ -72,11 +73,12 @@ struct ClassicSetGameCardView: View {
                                     .stroke(lineWidth: CardConstants.standardLineWidth)
                                     .foregroundColor(properties.color)
                                     .aspectRatio(CardConstants.contentAspectRatio, contentMode: .fit)
+                                Text("Two")
                             }
                             .frame(height: geo.size.height / CardConstants.frameScale)
                         }
                         
-                        if properties.count == 3 {
+                        if properties.count > 2 {
                             ZStack {
                                 properties.shape
                                     .fill()
@@ -87,6 +89,7 @@ struct ClassicSetGameCardView: View {
                                     .stroke(lineWidth: CardConstants.standardLineWidth)
                                     .foregroundColor(properties.color)
                                     .aspectRatio(CardConstants.contentAspectRatio, contentMode: .fit)
+                                Text("Three")
                             }
                             .frame(height: geo.size.height / CardConstants.frameScale)
                         }
