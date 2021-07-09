@@ -47,11 +47,7 @@ class ClassicSetGame: ObservableObject {
     }
     
     var discardedCards: [SetGame.Card] {
-        var res = [SetGame.Card]()
-        for card in model.cards where card.location == .discarded {
-            res.append(card)
-        }
-        return res
+        model.discardedCards
     }
     
     var deckEmpty: Bool {
@@ -79,7 +75,6 @@ class ClassicSetGame: ObservableObject {
     
     
     func cardPropertiesDecoder(_ properties: [SetGame.Property]) -> CardProperties {
-        
         // _ colors: SetGame.Property, _ shapes: SetGame.Property, _ opacities: SetGame.Property, _ counts: SetGame.Property
         var color: Color
         var shape: AnyShape

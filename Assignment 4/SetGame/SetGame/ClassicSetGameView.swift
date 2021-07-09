@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ClassicSetGameView: View {
     @ObservedObject var game: ClassicSetGame
-    @State private var lastTouchedCard: SetGame.Card?
     
     var body: some View {
         VStack {
@@ -19,7 +18,6 @@ struct ClassicSetGameView: View {
                     .onTapGesture {
                         withAnimation {
                             game.choose(card)
-
                         }
                     }
             }
@@ -37,7 +35,7 @@ struct ClassicSetGameView: View {
                 }
                 
                 if !game.discardedCards.isEmpty {
-                    let card = game.discardedCards[0]
+                    let card = game.discardedCards.last!
                     let cardProperties = game.cardPropertiesDecoder(card.properties)
                     ClassicSetGameCardView(card: card, properties: cardProperties, validSetSelected: game.validSetSelected)
                         .aspectRatio(2/3, contentMode: .fit)

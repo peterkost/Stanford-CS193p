@@ -19,6 +19,9 @@ struct SetGame {
     }
     
     private(set) var deckEmpty = false
+    
+    private(set) var discardedCards = [Card]()
+    
     var validSetSelected: Bool? {
         if chosenCardsIndices.count == 3 {
             return validSet()
@@ -43,6 +46,7 @@ struct SetGame {
                     for i in chosenCardsIndices {
                         cards[i].isSelected = false
                         cards[i].location = .discarded
+                        discardedCards.append(cards[i])
                     }
                 } else {
                     for i in chosenCardsIndices {
