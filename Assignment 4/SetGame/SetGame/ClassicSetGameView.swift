@@ -12,6 +12,7 @@ struct ClassicSetGameView: View {
     
     @Namespace private var dealingNamespace
     @State private var dealt = Set<UUID>()
+    @State private var firstDeal = true
     
     private func deal(_ card: SetGame.Card) {
         dealt.insert(card.id)
@@ -24,7 +25,7 @@ struct ClassicSetGameView: View {
     private func dealAnimation(for card: SetGame.Card) -> Animation {
         var delay = 0.0
         if let index = game.cards.firstIndex(where: { $0.id == card.id }) {
-            delay = Double(index) * (Double(2) / Double(game.cards.count))
+            delay = Double(index) * (Double(firstDeal ? 2 : 0.3) / Double(game.cards.count))
         }
         return Animation.easeInOut(duration: Double(0.5)).delay(delay)
     }
@@ -54,18 +55,7 @@ struct ClassicSetGameView: View {
             }
             
             HStack {
-                
-                deckBody
-                if !game.deckEmpty {
-                    RoundedRectangle(cornerRadius: 10)
-                        .aspectRatio(2/3, contentMode: .fit)
-                        .foregroundColor(.yellow)
-                        .onTapGesture {
-                            withAnimation {
-                                game.dealCards()
-                            }
-                        }
-                }
+                deck
                 
                 if !game.discardedCards.isEmpty {
                     let card = game.discardedCards.last!
@@ -77,26 +67,32 @@ struct ClassicSetGameView: View {
             .frame(height: 150)
             
             Button("New Game") {
+                firstDeal = true
                 game.newGame()
             }
         }
     }
     
     
-    // the body of the deck from which we deal the cards out
-    var deckBody: some View {
+    var deck: some View {
         ZStack {
-            ForEach(game.cardsOnBoard.filter(isUndealt)) { card in
+            ForEach(game.cards.filter(isUndealt)) { card in
                 let cardProperties = game.cardPropertiesDecoder(card.properties)
                 ClassicSetGameCardView(card: card, properties: cardProperties, validSetSelected: game.validSetSelected)
                     .matchedGeometryEffect(id: card.id, in: dealingNamespace)
                     .transition(AnyTransition.asymmetric(insertion: .opacity, removal: .identity))
                     .zIndex(zIndex(of: card))
             }
+            RoundedRectangle(cornerRadius: 10)
+
         }
-        .frame(width: CGFloat(90), height: CGFloat(90))
-        .foregroundColor(Color.red)
+        .aspectRatio(2/3, contentMode: .fit)
+        .foregroundColor(.yellow)
         .onTapGesture {
+            if !firstDeal {
+                game.dealCards()
+            }
+            firstDeal = false
             for card in game.cardsOnBoard {
                 withAnimation(dealAnimation(for: card)) {
                     deal(card)
