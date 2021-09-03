@@ -42,6 +42,7 @@ struct EmojiArtDocumentView: View {
                                 .font(.system(size: fontSize(for: emoji)))
                                 .scaleEffect(zoomScale)
                                 .position(position(for: emoji, in: geometry))
+                                .offset(x: selectedEmojis.contains(emoji) ? dragOffset.width : 0, y: selectedEmojis.contains(emoji) ? dragOffset.height : 0)
                                 .onTapGesture {
                                     tappedEmoji(emoji)
                                 }
@@ -182,26 +183,22 @@ struct EmojiArtDocumentView: View {
     
     // MARK: - Dragging Emojis
     
-    @State private var steadyStateDragOffset: CGSize = CGSize.zero
-    @GestureState private var gestureDragOffset: CGSize = CGSize.zero
-    
-    private var dragOffset: CGSize {
-        (steadyStateDragOffset + gestureDragOffset) * zoomScale
-    }
+    @State private var dragOffset: CGSize = CGSize.zero
     
     private func dragGesture() -> some Gesture {
         DragGesture()
-            .updating($gestureDragOffset) { latestDragGestureValue, gestureDragOffset, _ in
-                gestureDragOffset = latestDragGestureValue.translation / zoomScale
-                print(gestureDragOffset)
+            .onChanged { gesture in
+                dragOffset = gesture.translation
                 
-
             }
-            .onEnded { finalDragGestureValue in
-                steadyStateDragOffset = steadyStateDragOffset + (finalDragGestureValue.translation / zoomScale)
+            
+            .onEnded { _ in
                 for emoji in selectedEmojis {
-                    document.moveEmoji(emoji, by: steadyStateDragOffset)
+                    print("moving \(emoji.text) by \(dragOffset) ")
+                    document.moveEmoji(emoji, by: dragOffset)
                 }
+                dragOffset = .zero
+                selectedEmojis.removeAll()
             }
     }
     
