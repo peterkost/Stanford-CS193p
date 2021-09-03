@@ -37,10 +37,20 @@ struct EmojiArtDocumentView: View {
                 } else {
                     ForEach(document.emojis) { emoji in
                         ZStack {
+                            if !selectedEmojis.isEmpty {
+                                Image(systemName: "trash")
+                                    .font(.largeTitle)
+                                    .foregroundColor(.red)
+                                    .position(x: geometry.size.width/2, y: 30.0)
+                                    .onTapGesture {
+                                        document.deleteEmojis(selectedEmojis)
+                                        selectedEmojis.removeAll()
+                                    }
+                            }
                             Text(emoji.text)
                                 .background(Rectangle().stroke(lineWidth: 3).fill(selectedEmojis.contains(emoji) ? Color.green : Color.clear))
                                 .font(.system(size: fontSize(for: emoji)))
-                                .scaleEffect(zoomScale)
+                                .scaleEffect(selectedEmojis.contains(emoji) ? activeZoomScale : zoomScale)
                                 .position(position(for: emoji, in: geometry))
                                 .offset(x: selectedEmojis.contains(emoji) ? dragOffset.width : 0, y: selectedEmojis.contains(emoji) ? dragOffset.height : 0)
                                 .onTapGesture {
@@ -129,6 +139,7 @@ struct EmojiArtDocumentView: View {
     
     @State private var steadyStateZoomScale: CGFloat = 1
     @GestureState private var gestureZoomScale: CGFloat = 1
+    @State private var activeZoomScale: CGFloat = 1
     
     private var zoomScale: CGFloat {
         steadyStateZoomScale * gestureZoomScale
@@ -137,10 +148,22 @@ struct EmojiArtDocumentView: View {
     private func zoomGesture() -> some Gesture {
         MagnificationGesture()
             .updating($gestureZoomScale) { latestGestureScale, gestureZoomScale, _ in
-                gestureZoomScale = latestGestureScale
+                if selectedEmojis.isEmpty {
+                    gestureZoomScale = latestGestureScale
+                } else {
+                    activeZoomScale = latestGestureScale
+                }
             }
             .onEnded { gestureScaleAtEnd in
-                steadyStateZoomScale *= gestureScaleAtEnd
+                if selectedEmojis.isEmpty {
+                    steadyStateZoomScale *= gestureScaleAtEnd
+                } else {
+                    for emoji in selectedEmojis {
+                        document.scaleEmoji(emoji, by: gestureScaleAtEnd)
+                    }
+                    activeZoomScale = 1
+                    selectedEmojis.removeAll()
+                }
             }
     }
     
@@ -189,14 +212,13 @@ struct EmojiArtDocumentView: View {
         DragGesture()
             .onChanged { gesture in
                 dragOffset = gesture.translation
-                
             }
             
             .onEnded { _ in
                 for emoji in selectedEmojis {
-                    print("moving \(emoji.text) by \(dragOffset) ")
                     document.moveEmoji(emoji, by: dragOffset)
                 }
+
                 dragOffset = .zero
                 selectedEmojis.removeAll()
             }

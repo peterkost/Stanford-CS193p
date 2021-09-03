@@ -83,4 +83,12 @@ class EmojiArtDocument: ObservableObject
             emojiArt.emojis[index].size = Int((CGFloat(emojiArt.emojis[index].size) * scale).rounded(.toNearestOrAwayFromZero))
         }
     }
+    
+    func deleteEmojis(_ emojis: Set<EmojiArtModel.Emoji>) {
+        for emoji in emojis {
+            if let index = emojiArt.emojis.index(matching: emoji) {
+                emojiArt.emojis.remove(at: index)
+            }
+        }
+    }
 }
