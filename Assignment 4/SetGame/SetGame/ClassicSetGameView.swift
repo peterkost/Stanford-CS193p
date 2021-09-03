@@ -11,6 +11,7 @@ struct ClassicSetGameView: View {
     @ObservedObject var game: ClassicSetGame
     
     @Namespace private var dealingNamespace
+    
     @State private var dealt = Set<UUID>()
     @State private var firstDeal = true
     
@@ -34,6 +35,17 @@ struct ClassicSetGameView: View {
         -Double(game.cards.firstIndex(where: { $0.id == card.id }) ?? 0)
     }
     
+    // discard
+    @State private var discarded = Set<UUID>()
+    @Namespace private var discardingNamespace
+    private func discard(_ card: SetGame.Card) {
+        discarded.insert(card.id)
+    }
+    
+    private func isDiscareded(_ card: SetGame.Card) -> Bool {
+        !discarded.contains(card.id)
+    }
+    
     
     var body: some View {
         VStack {
@@ -49,6 +61,15 @@ struct ClassicSetGameView: View {
                         .onTapGesture {
                             withAnimation {
                                 game.choose(card)
+                                if let xd = game.validSetSelected {
+                                    if xd {
+                                        for card in game.discardedCards {
+                                            withAnimation(dealAnimation(for: card)) {
+                                                discard(card)
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                 }
@@ -56,13 +77,7 @@ struct ClassicSetGameView: View {
             
             HStack {
                 deck
-                
-                if !game.discardedCards.isEmpty {
-                    let card = game.discardedCards.last!
-                    let cardProperties = game.cardPropertiesDecoder(card.properties)
-                    ClassicSetGameCardView(card: card, properties: cardProperties, validSetSelected: game.validSetSelected)
-                        .aspectRatio(2/3, contentMode: .fit)
-                }
+                discardedPile
             }
             .frame(height: 150)
             
@@ -83,7 +98,10 @@ struct ClassicSetGameView: View {
                     .transition(AnyTransition.asymmetric(insertion: .opacity, removal: .identity))
                     .zIndex(zIndex(of: card))
             }
-            RoundedRectangle(cornerRadius: 10)
+            if !game.deckEmpty {
+                RoundedRectangle(cornerRadius: 10)
+            }
+
 
         }
         .aspectRatio(2/3, contentMode: .fit)
@@ -99,6 +117,26 @@ struct ClassicSetGameView: View {
                 }
             }
         }
+    }
+    
+//    for card in game.cardsOnBoard {
+//        withAnimation(dealAnimation(for: card)) {
+//            deal(card)
+//        }
+//    }
+    
+    var discardedPile: some View {
+        ZStack {
+            ForEach(game.discardedCards.filter(isDiscareded)) { card in
+                let cardProperties = game.cardPropertiesDecoder(card.properties)
+                ClassicSetGameCardView(card: card, properties: cardProperties, validSetSelected: game.validSetSelected)
+                    .matchedGeometryEffect(id: card.id, in: discardingNamespace)
+                    .transition(AnyTransition.asymmetric(insertion: .opacity, removal: .identity))
+                    .zIndex(zIndex(of: card))
+            }
+        }
+        .aspectRatio(2/3, contentMode: .fit)
+        .foregroundColor(.yellow)
     }
     
 }
