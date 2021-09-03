@@ -29,14 +29,24 @@ struct EmojiArtDocumentView: View {
                         .position(convertFromEmojiCoordinates((0,0), in: geometry))
                 )
                 .gesture(doubleTapToZoom(in: geometry.size))
+                .onTapGesture {
+                    selectedEmojis.removeAll()
+                }
                 if document.backgroundImageFetchStatus == .fetching {
                     ProgressView().scaleEffect(2)
                 } else {
                     ForEach(document.emojis) { emoji in
-                        Text(emoji.text)
-                            .font(.system(size: fontSize(for: emoji)))
-                            .scaleEffect(zoomScale)
-                            .position(position(for: emoji, in: geometry))
+                        ZStack {
+                            Text(emoji.text)
+                                .background(Rectangle().stroke(lineWidth: 3).fill(selectedEmojis.contains(emoji) ? Color.green : Color.clear))
+                                .font(.system(size: fontSize(for: emoji)))
+                                .scaleEffect(zoomScale)
+                                .position(position(for: emoji, in: geometry))
+                                .onTapGesture {
+                                    tappedEmoji(emoji)
+                                }
+                        }
+
                     }
                 }
             }
@@ -101,7 +111,17 @@ struct EmojiArtDocumentView: View {
             y: center.y + CGFloat(location.y) * zoomScale + panOffset.height
         )
     }
-
+    
+    // MARK: - Selecting Emojis
+    @State private var selectedEmojis = Set<EmojiArtModel.Emoji>()
+    
+    private func tappedEmoji(_ emoji: EmojiArtModel.Emoji) {
+        if selectedEmojis.contains(emoji) {
+            selectedEmojis.remove(emoji)
+        } else {
+            selectedEmojis.insert(emoji)
+        }
+    }
     
     // MARK: - Zooming
     
