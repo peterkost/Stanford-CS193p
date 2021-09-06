@@ -1,5 +1,5 @@
 //
- //  ContentView.swift
+ //  ThemeSelectView.swift
  //  Memorize
  //
  //  Created by Peter Kostin on 2021-06-25.
@@ -7,7 +7,7 @@
 
  import SwiftUI
 
- struct ContentView: View {
+ struct ThemeSelectView: View {
     @ObservedObject var themeStore: ThemeStore
     
      var body: some View {
@@ -69,9 +69,9 @@ struct CardView: View {
     }
 }
 
- struct ContentView_Previews: PreviewProvider {
+ struct ThemeSelectView_Previews: PreviewProvider {
      static var previews: some View {
         let themeStore = ThemeStore()
-        ContentView(themeStore: themeStore)
+        ThemeSelectView(themeStore: themeStore)
      }
  }
