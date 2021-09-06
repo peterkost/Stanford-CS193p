@@ -20,15 +20,32 @@
         List {
             ForEach(themeStore.themes) { theme in
                 NavigationLink(destination: GameView(theme: theme)) {
-                    VStack {
-                        Text(theme.name)
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text(theme.name.capitalized)
+                                .foregroundColor(stringToColor(theme.color))
+                                .font(.title2)
+                            
+                            Spacer()
+                            
+                            Text("\(EmojiMemoryGame.truePairCountIn(theme: theme)) pairs of cards")
+                        }
+
                         Text("\(theme.emojis.joined())")
+                            .lineLimit(1)
+                            .font(.title2)
                     }
                 }
 
             }
         }
         .navigationBarTitle("Memorize")
+        .navigationBarItems(
+            leading: EditButton(),
+            trailing: Button(action: { print("xd")
+            }) {
+                Image(systemName: "plus")
+            })
     }
 
  }
@@ -52,9 +69,9 @@ struct CardView: View {
     }
 }
 
-// struct ContentView_Previews: PreviewProvider {
-//     static var previews: some View {
-//        let game = EmojiMemoryGame()
-//         ContentView(viewModel: game)
-//     }
-// }
+ struct ContentView_Previews: PreviewProvider {
+     static var previews: some View {
+        let themeStore = ThemeStore()
+        ContentView(themeStore: themeStore)
+     }
+ }

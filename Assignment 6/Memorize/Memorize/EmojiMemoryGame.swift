@@ -15,7 +15,7 @@ class EmojiMemoryGame: ObservableObject {
     
     init(theme: Theme) {
         self.theme = theme
-        let pairsOfCards = theme.pairsOfCards > theme.emojis.count ? theme.emojis.count : theme.pairsOfCards
+        let pairsOfCards = EmojiMemoryGame.truePairCountIn(theme: theme)
         let emojis = theme.emojis.shuffled() // this shuffle makes sure that the used cards are random if pairsOfCards < theme.emojis.count
         model = MemoryGame<String>(numberOfPairsOfCards: pairsOfCards) { pairIndex in emojis[pairIndex] }
 //        themeColor = EmojiMemoryGame.stringToColor(theme.color)
@@ -28,6 +28,11 @@ class EmojiMemoryGame: ObservableObject {
     
     var score: Int {
         model.score
+    }
+    
+    // If theme has more pairs specified then actual cards will return the smaller number
+    static func truePairCountIn(theme: Theme) -> Int {
+        theme.pairsOfCards > theme.emojis.count ? theme.emojis.count : theme.pairsOfCards
     }
     
     
