@@ -36,16 +36,23 @@
                             .font(.title2)
                     }
                 }
-
+            }
+            .onDelete { indexSet in
+                themeStore.themes.remove(atOffsets: indexSet)
+            }
+            .onMove { indexSet, newOffset in
+                themeStore.themes.move(fromOffsets: indexSet, toOffset: newOffset)
             }
         }
         .navigationBarTitle("Memorize")
-        .navigationBarItems(
-            leading: EditButton(),
-            trailing: Button(action: { print("xd")
-            }) {
-                Image(systemName: "plus")
-            })
+        .toolbar {
+            ToolbarItem { EditButton() }
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {print("xd")}, label: {
+                    Image(systemName: "plus")
+                })
+            }
+        }
     }
 
  }

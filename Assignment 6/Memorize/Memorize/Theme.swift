@@ -14,7 +14,7 @@ struct Theme: Codable, Identifiable {
     let color: String
     private(set) var id = UUID().uuidString
     
-    fileprivate init(name: String, emojis: [String], pairsOfCards: Int? = nil, randomPairsOfCards: Bool = false, color: String) {
+    init(name: String, emojis: [String], pairsOfCards: Int? = nil, randomPairsOfCards: Bool = false, color: String) {
         self.name = name
         self.emojis = emojis
         if randomPairsOfCards {

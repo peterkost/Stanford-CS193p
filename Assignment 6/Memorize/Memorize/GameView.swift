@@ -18,13 +18,9 @@ struct GameView: View {
     
     var body: some View {
         ScrollView {
-            Text(theme.name.capitalized)
-                .font(.largeTitle)
             Text("Score: \(viewModel.score)")
                 .font(.title)
-                Button(action: viewModel.newGame) {
-                    Text("New Game")
-                }
+
             
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
                 ForEach(viewModel.cards) { card in
@@ -38,11 +34,19 @@ struct GameView: View {
         }
         .foregroundColor(stringToColor(theme.color))
         .padding(.horizontal)
+        .navigationBarTitle(theme.name.capitalized)
+        .toolbar {
+            Button(action: viewModel.newGame) {
+                Text("New Game")
+            }
+        }
+        
     }
 }
 
-//struct GameView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        GameView(theme)
-//    }
-//}
+struct GameView_Previews: PreviewProvider {
+    static var previews: some View {
+        let theme = Theme(name: "flags", emojis: ["🇷🇺", "🇧🇾", "🇰🇿", "🇰🇬", "🇸🇾", "🇨🇳", "🇰🇵", "🇷🇸", "🇫🇷", "🇲🇳", "🇲🇺", "🇨🇦", "🇱🇧", "🇦🇴", "🇲🇿", "🇺🇬", "🇮🇷", "🇨🇺", "🇲🇩", "🇸🇴"], randomPairsOfCards: true, color: "darkPink")
+        GameView(theme: theme)
+    }
+}
